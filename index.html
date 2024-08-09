@@ -1,0 +1,90 @@
+
+1	<!DOCTYPE html> 
+2	<html lang="ar" dir="rtl"> 
+3	<head> 
+4	    <meta charset="UTF-8"> 
+5	    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+6	    <title>Ш№Ш±Ш¶ Ш§Щ„Ш±Щ‚Щ… Щ…Щ† Ш§Щ„Щ€ЩЉШЁ ШіЩ€ЩѓЩЉШЄ</title> 
+7	    <style> 
+8	        body { 
+9	            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+10	            text-align: center; 
+11	            color: #ffffff; 
+12	            background: #000; 
+13	            margin: 0; 
+14	            padding: 0; 
+15	            display: flex; 
+16	            flex-direction: column; 
+17	            justify-content: center; 
+18	            align-items: center; 
+19	            height: 100vh; 
+20	        } 
+21	        #crashValue { 
+22	            font-size: 3.5em; 
+23	            padding: 15px; 
+24	            color: #00d1b2; 
+25	            line-height: 80px; 
+26	        } 
+27	        #username { 
+28	            font-size: 1.2em; 
+29	            color: #ffffff; 
+30	            margin-top: 10px; 
+31	            text-decoration: none; 
+32	            padding: 10px 20px; 
+33	            border: 2px solid #00aaff; 
+34	            border-radius: 30px; 
+35	            transition: all 0.3s ease; 
+36	            display: inline-block; 
+37	        } 
+38	        #username:hover { 
+39	            background-color: #00aaff; 
+40	            color: #ffffff; 
+41	            border-color: #ffffff; 
+42	        } 
+43	    </style> 
+44	</head> 
+45	<body> 
+46	    <div id="crashValue">0.00</div> 
+47	    <a id="username" href="https://t.me/IbnAshry" target="_blank">IbnAshryScript</a> 
+48	 
+49	    <script> 
+50	        var ws = null; 
+51	        var ШЄЩ€Щ‚Ш№Ш§ШЄШіШ§ШЁЩ‚Ш© = []; 
+52	        var currentIndex = 0; 
+53	 
+54	        function openWebSocket() { 
+55	            var url = 'wss://megapari.com/games-frame/sockets/crash?whence=114&fcountry=66&ref=192&gr=825&appGuid=00000000-0000-0000-0000-000000000000&lng=ar'; 
+56	            ws = new WebSocket(url); 
+57	            ws.onopen = function() { 
+58	                console.log('WebSocket opened'); 
+59	                ws.send('{"protocol":"json","version":1}\x1e'); 
+60	                ws.send('{"arguments":[{"activity":30,"currency":119}],"invocationId":"0","target":"Guest","type":1}\x1e'); 
+61	            }; 
+62	            ws.onclose = function() { 
+63	                console.log('WebSocket closed'); 
+64	                ws = null; 
+65	            }; 
+66	            ws.onmessage = function(event) { 
+67	                var data = JSON.parse(event.data.slice(0, -1)); 
+68	                if (data.target === 'OnCrash') { 
+69	                    ШЄЩ€Щ‚Ш№Ш§ШЄШіШ§ШЁЩ‚Ш©.push(data.arguments[0].f); 
+70	                    Ш№Ш±Ш¶Ш§Щ„ШЄЩ€Щ‚Ш№Ш§Щ„ШЄШ§Щ„ЩЉ(); 
+71	                } 
+72	            }; 
+73	            ws.onerror = function(event) { 
+74	                console.error('WebSocket error:', event); 
+75	            }; 
+76	        } 
+77	 
+78	        function Ш№Ш±Ш¶Ш§Щ„ШЄЩ€Щ‚Ш№Ш§Щ„ШЄШ§Щ„ЩЉ() { 
+79	            if (currentIndex < ШЄЩ€Щ‚Ш№Ш§ШЄШіШ§ШЁЩ‚Ш©.length) { 
+80	                var crashValueElement = document.getElementById('crashValue'); 
+81	                crashValueElement.innerText = ШЄЩ€Щ‚Ш№Ш§ШЄШіШ§ШЁЩ‚Ш©[currentIndex]; 
+82	                currentIndex++; 
+83	            } 
+84	        } 
+85	 
+86	        openWebSocket(); 
+87	    </script> 
+88	</body> 
+89	</html> 
